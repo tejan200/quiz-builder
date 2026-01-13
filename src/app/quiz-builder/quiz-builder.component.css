@@ -1,0 +1,43 @@
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.title-input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+
+.question-card, .preview-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+}
+
+.add-btn, .preview-btn {
+  padding: 8px 14px;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.controls button {
+  margin-right: 5px;
+}
+
+.delete-btn {
+  color: red;
+}
+
+.option-row {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+.small-btn {
+  margin-top: 5px;
+}

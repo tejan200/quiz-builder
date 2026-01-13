@@ -1,0 +1,94 @@
+<div class="container">
+
+  <h2>Assignment / Quiz Builder</h2>
+
+  <form [formGroup]="quizForm">
+
+    <!-- EDIT MODE -->
+    <div *ngIf="!previewMode">
+
+      <input class="title-input" type="text" placeholder="Quiz Title" formControlName="title" />
+
+      <button type="button" class="add-btn" (click)="addQuestion()">+ Add Question</button>
+
+    <div formArrayName="questions">
+
+      <div *ngFor="let q of questions.controls; let i = index" [formGroupName]="i" class="question-card">
+
+        <input type="text" placeholder="Question text" formControlName="questionText" />
+
+        <select formControlName="type">
+          <option *ngFor="let t of questionTypes" [value]="t.value">{{t.label}}</option>
+        </select>
+
+        <!-- OPTIONS -->
+        <div *ngIf="q.get('type')?.value === 'multiple' || q.get('type')?.value === 'dropdown'">
+          <div formArrayName="options">
+            <div *ngFor="let opt of getOptions(i).controls; let j = index" class="option-row">
+              <input [formControlName]="j" placeholder="Option text" />
+              <button (click)="removeOption(i, j)">x</button>
+            </div>
+          </div>
+          <button class="small-btn" (click)="addOption(i)">+ Add Option</button>
+        </div>
+
+        <div class="controls">
+          <button (click)="moveUp(i)">↑</button>
+          <button (click)="moveDown(i)">↓</button>
+          <button class="delete-btn" (click)="removeQuestion(i)">Delete</button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <button type="button" class="preview-btn" (click)="togglePreview()">Preview Quiz</button>
+
+  </div>
+
+  </form>
+
+  <!-- PREVIEW MODE -->
+  <div *ngIf="previewMode">
+
+    <h3>{{ quizForm.value.title }}</h3>
+
+    <div *ngFor="let q of quizForm.value.questions; let i = index" class="preview-card">
+
+      <p><strong>{{i + 1}}. {{ q.questionText }}</strong></p>
+
+      <!-- TEXT -->
+      <div *ngIf="q.type === 'text'">
+        <input type="text" placeholder="Your answer" />
+      </div>
+
+      <!-- RATING -->
+      <div *ngIf="q.type === 'rating'">
+        <select>
+          <option *ngFor="let r of [1,2,3,4,5]">{{r}}</option>
+        </select>
+      </div>
+
+      <!-- MULTIPLE -->
+      <div *ngIf="q.type === 'multiple'">
+        <div *ngFor="let opt of q.options">
+          <label>
+            <input type="radio" name="q{{i}}" /> {{opt}}
+          </label>
+        </div>
+      </div>
+
+      <!-- DROPDOWN -->
+      <div *ngIf="q.type === 'dropdown'">
+        <select>
+          <option *ngFor="let opt of q.options">{{opt}}</option>
+        </select>
+      </div>
+
+    </div>
+
+    <button class="preview-btn" (click)="togglePreview()">Back to Edit</button>
+
+  </div>
+
+</div>
